@@ -2,6 +2,7 @@ package net.ojm.backend.controller
 
 import jakarta.servlet.http.HttpServletResponse
 import net.ojm.backend.domain.dto.ShortUrlRequest
+import net.ojm.backend.domain.dto.ShortUrlResponse
 import net.ojm.backend.service.ShortUrlService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -19,9 +20,10 @@ class ShortUrlController (
 ) {
 
     @PostMapping
-    fun createShortUrl(@RequestBody request: ShortUrlRequest) : ResponseEntity<String> {
+    fun createShortUrl(@RequestBody request: ShortUrlRequest) : ResponseEntity<ShortUrlResponse> {
         val shortCode = service.createShortUrl(request.longUrl)
-        return ResponseEntity.ok("http://localhost:8080/api/shorturl/$shortCode")
+        val fullShortUrl = "http://100.81.212.125:8080/api/shorturl/$shortCode"
+        return ResponseEntity.ok(ShortUrlResponse(fullShortUrl))
     }
 
     @GetMapping("/{shortCode}")
